@@ -7,29 +7,63 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="style.css" rel="stylesheet">
 
-    <title>Code Quiz</title>
+    <title>JavaScript Quiz</title>
 </head>
 
 <body>
+
     <div class="container">
-        <div id="question-container hide">
+        <header>
+            <h1>Basics of JavaScript Quiz</h1>
+        </header>
+        <hr>
+        <div class="question-container hide">
             <div id="question">Question</div>
             <div class="answer-buttons button-grid">
-                <button class="answer-button button">Answer 1</button>
-                <button class="answer-button button">Answer 2</button>
-                <button class="answer-button button">Answer 3</button>
-                <button class="answer-button button">Answer 4</button>
+                <button class="answer-button button">Answer</button>
+                <button class="answer-button button">Answer</button>
+                <button class="answer-button button">Answer</button>
+                <button class="answer-button button">Answer</button>
             </div>
         </div>
-        <div class="start-buttons">
-            <button class="start-button button">Start Quiz</button>
+        <div class="start-div">
+            <div class="game-rules">
+                <h3>Rules: </h3>
+
+                <ul>
+                    <li>
+                        Once you press the start button, a three minute countdown begins.
+                    </li>
+                    <li>
+                        For every question you answer, you get 100 points.
+                    </li>
+                    <li>
+                        But for every question you answer incorrectly, you lose ten seconds from the countdown.
+                    </li>
+                    <li>
+                        Once you run out of time, the quiz ends.
+                    </li>
+                </ul>
+            </div>
+            <div class="start">
+                <button class="start-button button">Start Quiz</button>
+            </div>
         </div>
+        <form class="form-input hide">
+            <input id="initials-input" type="text" name="initials" placeholder="TRS"><br>
+            <button class="button-input button"></button>
+        </form>
         <div class="score-container">
             <p>Score: <span id="score"></span></p>
-            <p>Time Left: <span id="time-left"></span></p>
+            <p> <span id="minutes-left">1</span>:<span id="seconds-left">00<span></p>
         </div>
     </div>
-    <script src="script.js"></script>
+    <footer>
+        <a href="https://unsplash.com/@pawel_czerwinski" title="Download free do whatever you want high-resolution photos from Paweł Czerwiński">
+            <span style="display:inline-block;padding:2px 3px">
+                Photograph Provided by: Dan Meyers</span></a>
+                </footer>
+                <script src="script.js"></script>
 </body>
 
 </html>

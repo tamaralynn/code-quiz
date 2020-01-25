@@ -1,3 +1,25 @@
+// Variables
+const startButton = document.querySelector('.start-button');
+const startDiv = document.querySelector('.start-div')
+const questionContainerEl = document.querySelector('.question-container');
+const questionEl = document.getElementById('question');
+const answerButtonsEl = document.querySelector('.answer-buttons');
+const scoreEl = document.getElementById('score');
+const minutesEl = document.getElementById('minutes-left');
+const secondsEl = document.getElementById('seconds-left');
+let initialsEl = document.getElementById('initials-input');
+let storeInfoEl = '';
+
+//starting stats
+let totalSeconds = 0;
+let secondsElapsed = 0;
+let interval;
+let score = 0;
+scoreEl.innerHTML = score;
+
+let allQuestions, currentQuestionsIndex;
+
+
 const questions = [{
         question: 'Inside which HTML element do we put the JavaScript?',
         answers: [
@@ -35,7 +57,7 @@ const questions = [{
         ]
     },
     {
-        question: 'var x = [typeof x, typeof y][1];' + +'typeof typeof x;',
+        question: 'What does the following code return: var x = 1; typeof typeof x; ?',
         answers: [
             { text: '"number"', correct: false },
             { text: '"object"', correct: false },
@@ -53,16 +75,16 @@ const questions = [{
         ]
     },
     {
-        question: 'What will the following code return: Boolean(7 > 9)',
+        question: 'What will the following code return: Boolean(11 > 9) ?',
         answers: [
             { text: 'undefined', correct: false },
             { text: 'NaN', correct: false },
-            { text: 'false', correct: true },
-            { text: 'true', correct: false },
+            { text: 'false', correct: false },
+            { text: 'true', correct: true },
         ]
     },
     {
-        question: 'What is the result of: 3 < 4 < 5 === true',
+        question: 'What is the result of: 3 < 4 < 5 === true ?',
         answers: [
             { text: 'true', correct: false },
             { text: 'undefined', correct: false },
@@ -82,7 +104,7 @@ const questions = [{
         question: 'Which of the following is not a keyword in the JavaScript language?',
         answers: [
             { text: 'fill', correct: true },
-            { text: 'funtion', correct: false },
+            { text: 'function', correct: false },
             { text: 'for', correct: false },
             { text: 'while', correct: false },
         ]
@@ -106,3 +128,124 @@ const questions = [{
         ]
     },
 ]
+
+//start game function hides start button & directions
+function startGame() {
+    startDiv.classList.add('hide');
+    allQuestions = questions.sort(() => Math.random() - .5);
+    currentQuestionsIndex = 0;
+    questionContainerEl.classList.remove('hide');
+    setNextQuestion();
+    startTimer();
+}
+
+
+function getFormattedMinutes() {
+    var secondsLeft = totalSeconds - secondsElapsed;
+    var minutesLeft = Math.floor(secondsLeft / 60);
+    var formattedMinutes;
+    formattedMinutes = minutesLeft;
+    return formattedMinutes;
+}
+
+function getFormattedSeconds() {
+    var secondsLeft = (totalSeconds - secondsElapsed) % 60;
+    var formattedSeconds;
+    if (secondsLeft < 10) {
+        formattedSeconds = "0" + secondsLeft;
+    } else {
+        formattedSeconds = secondsLeft;
+    }
+    return formattedSeconds;
+}
+
+//display time left
+function renderTime() {
+    minutesEl.innerHTML = getFormattedMinutes();
+    secondsEl.innerHTML = getFormattedSeconds();
+
+    if (secondsElapsed >= totalSeconds) {
+        questionContainerEl.classList.add('hide');
+        startButton.classList.remove('hide');
+        startButton.innerText = 'Restart';
+        minutesEl.innerHTML = "0";
+        secondsEl.innerHTML = "00";
+    }
+}
+
+//start timer
+function startTimer() {
+    let minutes = 1;
+    clearInterval(interval);
+    totalSeconds = minutes * 60;
+
+    interval = setInterval(function() {
+        secondsElapsed++;
+        renderTime();
+    }, 1000);
+}
+
+//set next question removes old answers and calls showQuestion at diff question index
+function setNextQuestion() {
+    while (answerButtonsEl.firstChild) {
+        answerButtonsEl.removeChild(answerButtonsEl.firstChild);
+    }
+    showQuestion(allQuestions[currentQuestionsIndex]);
+}
+
+
+//shows question at question index
+function showQuestion(questions) {
+    questionEl.innerText = questions.question;
+    questions.answers.forEach(answers => {
+        const button = document.createElement('button');
+        button.innerText = answers.text;
+        button.classList.add('answer-button', 'button');
+        if (answers.correct) {
+            button.dataset.correct = answers.correct;
+        }
+        button.addEventListener('click', selectAnswer);
+        answerButtonsEl.appendChild(button);
+    })
+}
+
+/*function resetState() {
+    //clearStatusClass(document.body)
+    //nextButton.classList.add('hide')
+    while (answerButtonsEl.firstChild) {
+        answerButtonsEl.removeChild(answerButtonsEl.firstChild)
+    }
+}*/
+
+function selectAnswer(e) {
+    const selectedButton = e.target;
+    const correct = selectedButton.dataset.correct;
+    if (correct) {
+        score += 100;
+        scoreEl.innerHTML = score;
+    } else {
+        secondsElapsed += 10;
+    }
+}
+
+if (startButton) {
+    startButton.addEventListener('click', startGame, false);
+}
+
+startButton.addEventListener('click', startGame);
+answerButtonsEl.addEventListener('click', () => {
+    currentQuestionsIndex++;
+    console.log(currentQuestionsIndex);
+    console.log(allQuestions.length);
+    if (allQuestions.length < currentQuestionsIndex + 1 || secondsElapsed >= totalSeconds) {
+        questionContainerEl.classList.add('hide');
+        startButton.innerText = 'Restart';
+        startButton.classList.remove('hide');
+        minutesEl.innerHTML = "-";
+        secondsEl.innerHTML = "--";
+    } else {
+        setNextQuestion();
+    }
+    console.log(score);
+
+});

@@ -16,7 +16,6 @@ body {
     align-items: center;
     background: url("./assets/marble.jpg");
     background-position: center;
-    background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
@@ -36,26 +35,29 @@ div.button-grid {
 }
 
 button.button {
-    border: #333;
+    border: rgb(83, 83, 83) solid 1px;
     background-color: #eee;
     border-radius: 2px;
     padding: 5px 10px;
     color: #222;
     outline: none;
+    overflow: auto;
 }
 
 button.button:hover {
     border-radius: 5px;
-    border: rgb(219, 67, 62);
+    border: rgb(2, 81, 170) solid 2px;
+    ;
 }
 
-div.start-button {
+button.start-button {
     font-size: 3rem;
     font-weight: bold;
     padding: 10px 20px;
 }
 
-div.start-buttons {
+div.start,
+div.game-rules {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,6 +65,19 @@ div.start-buttons {
 
 p {
     text-align: center;
+}
+
+footer {
+    text-align: center;
+    font-size: 0.7em;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: #eee;
 }
 
 .hide {
